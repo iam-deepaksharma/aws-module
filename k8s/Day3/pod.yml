@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hdfcapp
+  labels:
+    app: Frontend
+    tier: p1
+    env: dev
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest

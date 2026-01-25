@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-ns
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: almalinux-pod
+  namespace: demo-ns
+  labels:
+    app: almalinux
+    env: dev
+spec:
+  containers:
+    - name: almalinux-container
+      image: almalinux:9
+      command: ["/bin/bash", "-c", "sleep 3600"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: almalinux-service
+  namespace: demo-ns
+spec:
+  selector:
+    app: almalinux
+    env: dev
+  ports:
+    - port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: alma-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: almalinux
+  template:
+    metadata:
+      labels:
+        app: almalinux
+    spec:
+      containers:
+      - name: almalinux
+        image: almalinux:9
